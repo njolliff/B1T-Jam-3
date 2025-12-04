@@ -1,0 +1,54 @@
+using UnityEngine;
+
+public enum ResourceType
+{
+    Food,
+    Water,
+    Wood,
+    Ore
+}
+
+public class GameManager : MonoBehaviour
+{
+    #region Variables
+    // Serialized
+    [Header("Time")]
+    public float dayLength;
+    public int day, month, year;
+
+    // Non-Serialized
+    private float _dayTimer = 0;
+    #endregion
+
+    void Update()
+    {
+        UpdateTime();
+    }
+
+    private void UpdateTime()
+    {
+        _dayTimer += Time.deltaTime;
+        if (_dayTimer >= dayLength)
+        {
+            // Day passed
+            day++;
+            
+            // Check if month passed
+            if (day >= 32)
+            {
+                day = 0;
+                month++;
+
+                // Check if year passed
+                if (month >= 13)
+                {
+                    month = 0;
+                    year++;
+                }
+            }
+
+            EventManager.OnDayPassed(day, month, year);
+            _dayTimer = 0f;
+        }
+    }
+}
