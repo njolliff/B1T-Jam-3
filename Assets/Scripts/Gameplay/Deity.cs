@@ -1,16 +1,24 @@
 using UnityEngine;
+using UnityEngine.UI;
 
+[System.Serializable]
 public class Deity
 {
+    [Header("Resource")]
     public ResourceType resourceType;
-    public float happiness;
+    public int resourcesDemanded;
     public float offeringCooldown;
+    public Slider offerringSlider;
 
-    private float _maxHappiness = 100f;
+    [Header("Happiness")]
+    public float happiness;
+    public Slider happinessSlider;
 
-    private float _offeringTimer = 0f;
+    //private float _maxHappiness = 100f;
 
-    public Deity(ResourceType resourceType)
+    //private float _offeringTimer = 0f;
+
+    private void UpdateOfferingTimer(int day, int month, int year)
     {
         
     }

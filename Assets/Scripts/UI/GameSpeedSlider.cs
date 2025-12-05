@@ -5,6 +5,11 @@ public class GameSpeedSlider : MonoBehaviour
 {
     public Slider slider;
 
+    void Start()
+    {
+        GameSpeedChanged();
+    }
+
     public void GameSpeedChanged()
     {
         Time.timeScale = SliderValueToScale(slider.value);
