@@ -22,9 +22,9 @@ public class ResourceCounter : MonoBehaviour
 
     private void UpdateText(ResourceType updatedResource)
     {
-        if (updatedResource == resource && GameManager.Instance != null)
+        if (updatedResource == resource && ResourceManager.Instance != null && text != null)
         {
-            text.text = $"{GameManager.Instance.GetNumResource(resource):D3}";
+            text.text = $"{ResourceManager.Instance.GetNumResource(resource):D3}";
         }
     }
 }

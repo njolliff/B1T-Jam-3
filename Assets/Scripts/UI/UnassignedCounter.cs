@@ -25,9 +25,9 @@ public class UnassignedCounter : MonoBehaviour
     private void UpdateText()
     {
         // Update counter
-        if (GameManager.Instance != null)
+        if (ResourceManager.Instance != null && text != null)
         {
-            text.text = GameManager.Instance.unassignedWorkers.ToString();
+            text.text = ResourceManager.Instance.unassignedWorkers.ToString();
         }
     }
 }

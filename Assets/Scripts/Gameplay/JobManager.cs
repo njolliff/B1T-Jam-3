@@ -21,48 +21,31 @@ public class JobManager : MonoBehaviour
     }
     #endregion
 
-    #region Event Subscription
-    void OnEnable()
-    {
-        EventManager.onDayPassed += DoDailyWork;
-    }
-    void OnDisable()
-    {
-        EventManager.onDayPassed -= DoDailyWork;
-    }
-    #endregion
-
     #region Day Passed
-    private void DoDailyWork(int day, int month, int year)
+    public void DayPassed()
     {
         // Generate resources
-        GameManager.Instance.IncreaseResource(ResourceType.Food, foodWorkSite.GenerateResources());
-        EventManager.OnResourceNumberChanged(ResourceType.Food);
-
-        GameManager.Instance.IncreaseResource(ResourceType.Water, waterWorkSite.GenerateResources());
-        EventManager.OnResourceNumberChanged(ResourceType.Water);
-
-        GameManager.Instance.IncreaseResource(ResourceType.Wood, woodWorkSite.GenerateResources());
-        EventManager.OnResourceNumberChanged(ResourceType.Wood);
-
-        GameManager.Instance.IncreaseResource(ResourceType.Ore, oreWorkSite.GenerateResources());
-        EventManager.OnResourceNumberChanged(ResourceType.Ore);
+        ResourceManager.Instance.IncreaseResource(ResourceType.Food, foodWorkSite.GenerateResources());
+        ResourceManager.Instance.IncreaseResource(ResourceType.Water, waterWorkSite.GenerateResources());
+        ResourceManager.Instance.IncreaseResource(ResourceType.Wood, woodWorkSite.GenerateResources());
+        ResourceManager.Instance.IncreaseResource(ResourceType.Ore, oreWorkSite.GenerateResources());
+        
 
         // Generate money
-        GameManager.Instance.IncreaseResource(ResourceType.Money, Mathf.RoundToInt(
+        ResourceManager.Instance.IncreaseResource(ResourceType.Money, Mathf.RoundToInt(
             foodWorkSite.GenerateMoney() +
             waterWorkSite.GenerateMoney() +
             woodWorkSite.GenerateMoney() +
-            oreWorkSite.GenerateMoney())
-        );
-        EventManager.OnResourceNumberChanged(ResourceType.Money);
+            oreWorkSite.GenerateMoney()
+        ));
+        
     }
     #endregion
 
     #region Assignment / Unassignment
     public void AssignWorker(ResourceType resourceType)
     {
-        if (GameManager.Instance.unassignedWorkers > 0)
+        if (ResourceManager.Instance.unassignedWorkers > 0)
         {
             // Assign worker to appropriate work site
             switch (resourceType)
@@ -82,7 +65,7 @@ public class JobManager : MonoBehaviour
             }
 
             // Decrement unassigned workers and call worker number changed event
-            GameManager.Instance.unassignedWorkers--;
+            ResourceManager.Instance.unassignedWorkers--;
             EventManager.OnWorkerNumberChanged();
         }
     }
@@ -96,7 +79,7 @@ public class JobManager : MonoBehaviour
                 if (foodWorkSite.workersAssigned > 0)
                 {
                     foodWorkSite.workersAssigned--;
-                    GameManager.Instance.unassignedWorkers++;
+                    ResourceManager.Instance.unassignedWorkers++;
                     EventManager.OnWorkerNumberChanged();
                 }
                 break;
@@ -104,7 +87,7 @@ public class JobManager : MonoBehaviour
                 if (waterWorkSite.workersAssigned > 0)
                 {
                     waterWorkSite.workersAssigned--;
-                    GameManager.Instance.unassignedWorkers++;
+                    ResourceManager.Instance.unassignedWorkers++;
                     EventManager.OnWorkerNumberChanged();
                 }
                 break;
@@ -112,7 +95,7 @@ public class JobManager : MonoBehaviour
                 if (woodWorkSite.workersAssigned > 0)
                 {
                     woodWorkSite.workersAssigned--;
-                    GameManager.Instance.unassignedWorkers++;
+                    ResourceManager.Instance.unassignedWorkers++;
                     EventManager.OnWorkerNumberChanged();
                 }
                 break;
@@ -120,7 +103,7 @@ public class JobManager : MonoBehaviour
                 if (oreWorkSite.workersAssigned > 0)
                 {
                     oreWorkSite.workersAssigned--;
-                    GameManager.Instance.unassignedWorkers++;
+                    ResourceManager.Instance.unassignedWorkers++;
                     EventManager.OnWorkerNumberChanged();
                 }
                 break;

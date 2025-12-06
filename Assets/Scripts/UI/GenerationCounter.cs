@@ -22,7 +22,7 @@ public class GenerationCounter : MonoBehaviour
 
     private void UpdateText()
     {
-        if (JobManager.Instance != null)
+        if (JobManager.Instance != null && text != null)
         {
             if (counterType == GenerationCounterType.Resource)
                 text.text = JobManager.Instance.GetResourceGenerationRange(resourceType);

@@ -25,7 +25,7 @@ public class Tab : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPo
     public static Tab activeTab;
     #endregion
 
-    #region Initialize
+    #region Initialization / Destruction
     void Start()
     {
         // Set the default active tab
@@ -34,6 +34,11 @@ public class Tab : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPo
             activeTab = this;
             SetSpriteEnabled();
         }
+    }
+    void OnDestroy()
+    {
+        if (activeTab == this)
+            activeTab = null;
     }
     #endregion
 
@@ -60,7 +65,8 @@ public class Tab : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPo
             // Disable other screens, then enable instance screen
             foreach (var otherScreen in otherScreens)
                 otherScreen.SetActive(false);
-            screen.SetActive(true);
+            if (screen != null)
+                screen.SetActive(true);
         }
     }
     #endregion
@@ -68,15 +74,21 @@ public class Tab : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPo
     #region Sprite Toggle
     private void SetSpriteEnabled()
     {
-        // Change sprite to selected and move text +2 px
-        sprite.sprite = selectedSprite;
-        text.rectTransform.localPosition = text.rectTransform.localPosition + Vector3.up * 2;
+        if (sprite != null && text != null)
+        {
+            // Change sprite to selected and move text +2 px
+            sprite.sprite = selectedSprite;
+            text.rectTransform.localPosition = text.rectTransform.localPosition + Vector3.up * 2;
+        }
     }
     public void SetSpriteDisabled()
     {
-        // Change sprite to unselected and move text -2 px
-        sprite.sprite = unselectedSprite;
-        text.rectTransform.localPosition = text.rectTransform.localPosition + Vector3.down * 2;
+        if (sprite != null && text != null)
+        {
+            // Change sprite to unselected and move text -2 px
+            sprite.sprite = unselectedSprite;
+            text.rectTransform.localPosition = text.rectTransform.localPosition + Vector3.down * 2;
+        }
     }
     #endregion
 }

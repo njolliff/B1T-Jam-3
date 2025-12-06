@@ -19,7 +19,7 @@ public class WorkersAssignedCounter : MonoBehaviour
 
     private void UpdateText()
     {
-        if (JobManager.Instance != null)
+        if (JobManager.Instance != null && text != null)
         {
             text.text = JobManager.Instance.GetNumWorkers(resourceType).ToString();
         }

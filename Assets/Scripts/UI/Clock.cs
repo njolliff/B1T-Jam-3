@@ -16,6 +16,7 @@ public class Clock : MonoBehaviour
 
     private void UpdateClockText(int day, int month, int year)
     {
-        text.text = $"{year:D2}:{month:D2}:{day:D2}";
+        if (text != null)
+            text.text = $"{year:D2}:{month:D2}:{day:D2}";
     }
 }

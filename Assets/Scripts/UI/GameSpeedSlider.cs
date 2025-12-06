@@ -12,7 +12,8 @@ public class GameSpeedSlider : MonoBehaviour
 
     public void GameSpeedChanged()
     {
-        Time.timeScale = SliderValueToScale(slider.value);
+        if (slider != null)
+            Time.timeScale = SliderValueToScale(slider.value);
     }
 
     private float SliderValueToScale(float value) => value switch

@@ -553,6 +553,7 @@ GameObject:
   - component: {fileID: 93736075}
   - component: {fileID: 93736073}
   - component: {fileID: 93736074}
+  - component: {fileID: 93736076}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -572,13 +573,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b80a45b557652843b738d581a88b4ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  population: 4
+  _population: 4
   unassignedWorkers: 0
-  money: 0
-  food: 0
-  water: 0
-  wood: 0
-  ore: 0
+  _money: 0
+  _food: 0
+  _water: 0
+  _wood: 0
+  _ore: 0
 --- !u!4 &93736071
 Transform:
   m_ObjectHideFlags: 0
@@ -666,6 +667,71 @@ MonoBehaviour:
   day: 0
   month: 0
   year: 0
+--- !u!114 &93736076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 93736069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 081ccee3fcafbe04f928973b9bae8df2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeityManager
+  baseResourcesDemanded: 5
+  baseDemandInterval: 6
+  demandScaleFactor: 1.2
+  happinessGain: 5
+  happinessLoss: 15
+  foodHappinessSlider: {fileID: 1916434824}
+  foodOfferingSlider: {fileID: 29466621}
+  waterHappinessSlider: {fileID: 1507496570}
+  waterOfferingSlider: {fileID: 1190029697}
+  woodHappinessSlider: {fileID: 1828261986}
+  woodOfferingSlider: {fileID: 494771174}
+  oreHappinessSlider: {fileID: 245227110}
+  oreOfferingSlider: {fileID: 1419518510}
+  foodDeity:
+    resourceType: 0
+    baseResourcesDemanded: 0
+    demandInterval: 0
+    daysUntilOffering: 0
+    demandScaleFactor: 0
+    demandUpgradeFactor: 0
+    happiness: 0
+    happinessGain: 0
+    happinessLoss: 0
+  waterDeity:
+    resourceType: 1
+    baseResourcesDemanded: 0
+    demandInterval: 0
+    daysUntilOffering: 0
+    demandScaleFactor: 0
+    demandUpgradeFactor: 0
+    happiness: 0
+    happinessGain: 0
+    happinessLoss: 0
+  woodDeity:
+    resourceType: 2
+    baseResourcesDemanded: 0
+    demandInterval: 0
+    daysUntilOffering: 0
+    demandScaleFactor: 0
+    demandUpgradeFactor: 0
+    happiness: 0
+    happinessGain: 0
+    happinessLoss: 0
+  oreDeity:
+    resourceType: 3
+    baseResourcesDemanded: 0
+    demandInterval: 0
+    daysUntilOffering: 0
+    demandScaleFactor: 0
+    demandUpgradeFactor: 0
+    happiness: 0
+    happinessGain: 0
+    happinessLoss: 0
 --- !u!1 &93894478
 GameObject:
   m_ObjectHideFlags: 0
@@ -794,7 +860,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0567ba629d113854981fc44a3355f7e1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 900d0192cdadae745aa5a9c98802b5c9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2075,9 +2141,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 758817549}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 100
   m_WholeNumbers: 0
-  m_Value: 0.5
+  m_Value: 50
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -6781,7 +6847,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0567ba629d113854981fc44a3355f7e1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 900d0192cdadae745aa5a9c98802b5c9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -8393,7 +8459,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0567ba629d113854981fc44a3355f7e1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 900d0192cdadae745aa5a9c98802b5c9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -11251,7 +11317,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0567ba629d113854981fc44a3355f7e1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 900d0192cdadae745aa5a9c98802b5c9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -11353,9 +11419,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 353856575}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 100
   m_WholeNumbers: 0
-  m_Value: 0.5
+  m_Value: 50
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -13211,9 +13277,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 134616359}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 100
   m_WholeNumbers: 0
-  m_Value: 0.5
+  m_Value: 50
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -14404,9 +14470,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2094608153}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 100
   m_WholeNumbers: 0
-  m_Value: 0.5
+  m_Value: 50
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

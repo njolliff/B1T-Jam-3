@@ -39,11 +39,11 @@ public class JobButton : MonoBehaviour, IPointerClickHandler
     {
         // If button is a plus button, enable button if there are workers available to be assigned
         // Disable if there are no workers to be assigned
-        if (buttonType == JobButtonType.Plus && GameManager.Instance != null)
+        if (buttonType == JobButtonType.Plus && ResourceManager.Instance != null)
         {
-            if (GameManager.Instance.unassignedWorkers > 0 && !_isEnabled)
+            if (ResourceManager.Instance.unassignedWorkers > 0 && !_isEnabled)
                 EnableButton();
-            else if (GameManager.Instance.unassignedWorkers <= 0 && _isEnabled)
+            else if (ResourceManager.Instance.unassignedWorkers <= 0 && _isEnabled)
                 DisableButton();
         }
         // If button is a minus button, enable button if resource work site has workers assigned
@@ -59,18 +59,24 @@ public class JobButton : MonoBehaviour, IPointerClickHandler
 
     private void EnableButton()
     {
-        // Enable sprite and make button interactable
-        sprite.enabled = true;
-        button.interactable = true;
+        if (sprite != null && button != null)
+        {
+            // Enable sprite and make button interactable
+            sprite.enabled = true;
+            button.interactable = true;
 
-        _isEnabled = true;
+            _isEnabled = true;
+        }
     }
     private void DisableButton()
     {
-        // Disable sprite and make button uninteractable
-        sprite.enabled = false;
-        button.interactable = false;
+        if (sprite != null && button != null)
+        {
+            // Disable sprite and make button uninteractable
+            sprite.enabled = false;
+            button.interactable = false;
 
-        _isEnabled = false;
+            _isEnabled = false;
+        }
     }
 }

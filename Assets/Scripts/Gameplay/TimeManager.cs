@@ -34,8 +34,20 @@ public class TimeManager : MonoBehaviour
                 }
             }
 
-            EventManager.OnDayPassed(day, month, year);
+            DayPassed();
             _dayTimer = 0f;
         }
+    }
+
+    private void DayPassed()
+    {
+        // Do daily work
+        JobManager.Instance.DayPassed();
+
+        // Check for deity demands
+        DeityManager.Instance.DayPassed();
+        
+        // Update UI
+        EventManager.OnDayPassed(day, month, year);
     }
 }
