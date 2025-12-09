@@ -26,7 +26,7 @@ public class Tab : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPo
     #endregion
 
     #region Initialization / Destruction
-    void Start()
+    void OnEnable()
     {
         // Set the default active tab
         if (isDefaultTab)
@@ -35,7 +35,7 @@ public class Tab : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPo
             SetSpriteEnabled();
         }
     }
-    void OnDestroy()
+    void OnDisable()
     {
         if (activeTab == this)
             activeTab = null;

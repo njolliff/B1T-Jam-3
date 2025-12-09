@@ -70,112 +70,131 @@ public class ResourceManager : MonoBehaviour
     }
 
     #region Increase/Decrease Resource
-    public void IncreaseResource(ResourceType resourceType, int amount)
+    public void IncreaseResource(ResourceType resource, int amount)
     {
-        if (resourceType == ResourceType.Food && _food < 999)
+        if (resource == ResourceType.Food)
         {
-            if (_food + amount > 999)
-                _food = 999;
-            else
-                _food += amount;
+            // Gain resource, capped at 999
+            _food = Mathf.Min(999, _food + amount);
 
-            EventManager.OnResourceNumberChanged(ResourceType.Food);
+            // Notify population manager of resource gain
+            PopulationManager.Instance.PopulationResourceGenerated(resource, amount);
+
+            // Update UI
+            EventManager.OnResourceNumberChanged(resource);
         }
-        else if (resourceType == ResourceType.Water && _water < 999)
+        else if (resource == ResourceType.Water)
         {
-            if (_water + amount > 999)
-                _water = 999;
-            else
-                _water += amount;
+            // Gain resource, capped at 999
+            _water = Mathf.Min(999, _water + amount);
 
-            EventManager.OnResourceNumberChanged(ResourceType.Water);
+            // Notify population manager of resource gain
+            PopulationManager.Instance.PopulationResourceGenerated(resource, amount);
+
+            // Update UI
+            EventManager.OnResourceNumberChanged(resource);
         }
-        else if (resourceType == ResourceType.Wood && _wood < 999)
+        else if (resource == ResourceType.Wood)
         {
-            if (_wood + amount > 999)
-                _wood = 999;
-            else
-                _wood += amount;
+            // Gain resource, capped at 999
+            _wood = Mathf.Min(999, _wood + amount);
 
-            EventManager.OnResourceNumberChanged(ResourceType.Wood);
+            // Notify population manager of resource gain
+            PopulationManager.Instance.PopulationResourceGenerated(resource, amount);
+
+            // Update UI
+            EventManager.OnResourceNumberChanged(resource);
         }
-        else if (resourceType == ResourceType.Ore && _ore < 999)
+        else if (resource == ResourceType.Ore)
         {
-            if (_ore + amount > 999)
-                _ore = 999;
-            else
-                _ore += amount;
+            // Gain resource, capped at 999
+            _ore = Mathf.Min(999, _ore + amount);
 
-            EventManager.OnResourceNumberChanged(ResourceType.Ore);
+            // Notify population manager of resource gain
+            PopulationManager.Instance.PopulationResourceGenerated(resource, amount);
+
+            // Update UI
+            EventManager.OnResourceNumberChanged(resource);
         }
-        else if (resourceType == ResourceType.Population && _population < 999)
+        else if (resource == ResourceType.Population)
         {
             if (_population + amount > 999)
+            {
+                // Add actual number of population gained to unassigned workers
+                int populationGained = Mathf.Max(0, 999 - (_population + amount));
+                unassignedWorkers += populationGained;
+                EventManager.OnWorkerNumberChanged();
+
                 _population = 999;
+            }
             else
+            {
+                // Add number of population gained to unassigned workers and population
                 _population += amount;
+                unassignedWorkers += amount;
+                EventManager.OnWorkerNumberChanged();
+            }
 
-            EventManager.OnResourceNumberChanged(ResourceType.Population);
+            EventManager.OnResourceNumberChanged(resource);
         }
-        else if (resourceType == ResourceType.Money && _money < 999)
+        else if (resource == ResourceType.Money)
         {
-            if (_money + amount > 999)
-                _money = 999;
-            else
-                _money += amount;
+            // Gain resource, capped at 999
+            _money = Mathf.Min(999, _money + amount);
 
-            EventManager.OnResourceNumberChanged(ResourceType.Money);
+            // Update UI
+            EventManager.OnResourceNumberChanged(resource);
         }
     }
-    public void DecreaseResource(ResourceType resourceType, int amount)
+    public void DecreaseResource(ResourceType resource, int amount)
     {
-        if (resourceType == ResourceType.Food && _food > 0)
+        if (resource == ResourceType.Food)
         {
-            if (_food - amount < 0)
-                _food = 0;
-            else
-                _food -= amount;
-            EventManager.OnResourceNumberChanged(ResourceType.Food);
+            // Lose resource, but not below 0
+            _food = Mathf.Max(0, _food - amount);
+
+            // Update UI
+            EventManager.OnResourceNumberChanged(resource);
         }
-        else if (resourceType == ResourceType.Water && _water > 0)
+        else if (resource == ResourceType.Water)
         {
-            if (_water - amount < 0)
-                _water = 0;
-            else
-                _water -= amount;
-            EventManager.OnResourceNumberChanged(ResourceType.Water);
+            // Lose resource, but not below 0
+            _water = Mathf.Max(0, _water - amount);
+
+            // Update UI
+            EventManager.OnResourceNumberChanged(resource);
         }
-        else if (resourceType == ResourceType.Wood && _wood > 0)
+        else if (resource == ResourceType.Wood)
         {
-            if (_wood - amount < 0)
-                _wood = 0;
-            else
-                _wood -= amount;
-            EventManager.OnResourceNumberChanged(ResourceType.Wood);
+            // Lose resource, but not below 0
+            _wood = Mathf.Max(0, _wood - amount);
+
+            // Update UI
+            EventManager.OnResourceNumberChanged(resource);
         }
-        else if (resourceType == ResourceType.Ore && _ore > 0)
+        else if (resource == ResourceType.Ore)
         {
-            if (_ore - amount < 0)
-                _ore = 0;
-            else
-                _ore -= amount;
-            EventManager.OnResourceNumberChanged(ResourceType.Ore);
+            // Lose resource, but not below 0
+            _ore = Mathf.Max(0, _ore - amount);
+
+            // Update UI
+            EventManager.OnResourceNumberChanged(resource);
         }
-        else if (resourceType == ResourceType.Population && _population > 0)
+        else if (resource == ResourceType.Population)
         {
-            if (_population - amount < 0)
-                _population = 0;
-            else
-                _population -= amount;
-            EventManager.OnResourceNumberChanged(ResourceType.Population);
+            // Lose resource, but not below 0
+            _population = Mathf.Max(0, _population - amount);
+
+            // Update UI
+            EventManager.OnResourceNumberChanged(resource);
         }
-        else if (resourceType == ResourceType.Money && _money > 0)
+        else if (resource == ResourceType.Money)
         {
-            if (_money - amount < 0)
-                _money = 0;
-            else
-                _money -= amount;
-            EventManager.OnResourceNumberChanged(ResourceType.Population);
+            // Lose resource, but not below 0
+            _money = Mathf.Max(0, _money - amount);
+
+            // Update UI
+            EventManager.OnResourceNumberChanged(resource);
         }
     }
     #endregion

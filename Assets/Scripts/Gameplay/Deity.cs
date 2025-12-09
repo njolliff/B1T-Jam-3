@@ -56,7 +56,6 @@ public class Deity
 
     public void CheckOfferingDay()
     {
-
         // Update offering progress bar
         if (_offerringSlider != null)
             _offerringSlider.value = demandInterval - daysUntilOffering;
@@ -75,27 +74,30 @@ public class Deity
 
     private void DemandOffering()
     {
-        // Calculate offering amount and make demand
-        int offeringAmount = Mathf.RoundToInt((float)(baseResourcesDemanded * Mathf.Pow(demandScaleFactor, _numDemandsMade) * demandUpgradeFactor));
+        // Calculate offering amount and make demand of up to 999 resources
+        int offeringAmount = Mathf.Min(
+            999,
+            Mathf.RoundToInt((float)(baseResourcesDemanded * Mathf.Pow(demandScaleFactor, _numDemandsMade) * demandUpgradeFactor))
+        );
 
-        // Gain happiness if able to receive full offering, lose happiness if not
-        if (ResourceManager.Instance.TakeOffering(resourceType, offeringAmount))
-            GainHappiness();
-        else
-            LoseHappiness();
+        if (ResourceManager.Instance != null)
+        {
+            // Increment number of demands made
+            _numDemandsMade++;
 
-        // Increment number of demands made
-        _numDemandsMade++;
+            // Gain happiness if able to receive full offering, lose happiness if not
+            if (ResourceManager.Instance.TakeOffering(resourceType, offeringAmount))
+                GainHappiness();
+            else
+                LoseHappiness();
+        }
     }
 
     #region Gain/Lose Happiness
     private void GainHappiness()
     {
         // Increase happiness up to 100
-        if (happiness + happinessGain > 100)
-            happiness = 100;
-        else
-            happiness += happinessGain;
+        happiness = Mathf.Max(100, happiness + happinessGain);
 
         // Update happiness slider
         if (_happinessSlider != null)
@@ -104,14 +106,15 @@ public class Deity
     private void LoseHappiness()
     {
         // Decrease happiness down to 0
-        if (happiness - happinessLoss < 0)
-            happiness = 0;
-        else
-            happiness -= happinessLoss;
+        happiness = Mathf.Max(0, happiness - happinessLoss);
 
         // Update happiness slider
         if (_happinessSlider != null)
             _happinessSlider.value = happiness;
+
+        // If happiness is 0, game over
+        if (happiness == 0 && GameManager.Instance != null)
+            GameManager.Instance.GameOver();
     }
     #endregion
 }

@@ -10,5 +10,7 @@ public static class EventManager
     public static void OnWorkerNumberChanged() => onWorkerNumberChanged?.Invoke();
 
     public static Action<ResourceType> onResourceNumberChanged;
-    public static void OnResourceNumberChanged(ResourceType resourceType) => onResourceNumberChanged?.Invoke(resourceType);
+    public static void OnResourceNumberChanged(ResourceType resource) => onResourceNumberChanged?.Invoke(resource);
+    public static Action<ResourceType, int> onResourceGenerated;
+    public static void OnResourceNumberChanged(ResourceType resource, int amount) => onResourceGenerated?.Invoke(resource, amount);
 }

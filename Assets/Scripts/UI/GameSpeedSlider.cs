@@ -5,6 +5,20 @@ public class GameSpeedSlider : MonoBehaviour
 {
     public Slider slider;
 
+    #region Singleton
+    public static GameSpeedSlider Instance;
+    void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+    }
+    void OnDestroy()
+    {
+        if (Instance == this)
+            Instance = null;
+    }
+    #endregion
+
     void Start()
     {
         GameSpeedChanged();
@@ -19,12 +33,12 @@ public class GameSpeedSlider : MonoBehaviour
     private float SliderValueToScale(float value) => value switch
     {
         0 => 0f,
-        1 => 0.5f,
-        2 => 1f,
-        3 => 1.5f,
-        4 => 2f,
-        5 => 2.5f,
-        6 => 3f,
+        1 => 1f,
+        2 => 2f,
+        3 => 3f,
+        4 => 4f,
+        5 => 5f,
+        6 => 6f,
 
         _ => 1f
     };
