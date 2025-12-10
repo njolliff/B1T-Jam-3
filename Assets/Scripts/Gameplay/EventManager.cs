@@ -1,5 +1,7 @@
 using System;
 
+public enum UpgradeType { Gold, Person}
+
 public static class EventManager
 {
     public static Action<int, int, int> onDayPassed;
@@ -11,6 +13,6 @@ public static class EventManager
     public static Action<ResourceType> onResourceNumberChanged;
     public static void OnResourceNumberChanged(ResourceType resource) => onResourceNumberChanged?.Invoke(resource);
 
-    public static Action onUpgradePurchased;
-    public static void OnUpgradePurchased() => onUpgradePurchased?.Invoke();
+    public static Action<UpgradeType> onUpgradePurchased;
+    public static void OnUpgradePurchased(UpgradeType upgradeType) => onUpgradePurchased?.Invoke(upgradeType);
 }

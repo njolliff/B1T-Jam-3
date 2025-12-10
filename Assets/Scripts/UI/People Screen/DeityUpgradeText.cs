@@ -1,10 +1,10 @@
 using TMPro;
 using UnityEngine;
 
-public class SiteUpgradeText : MonoBehaviour
+public class DeityUpgradeText : MonoBehaviour
 {
     public ResourceType resource;
-    public bool isResourceText;
+    public bool isQuantityText;
     public TextMeshProUGUI text;
 
     void OnEnable()
@@ -24,6 +24,11 @@ public class SiteUpgradeText : MonoBehaviour
     private void UpdateText(UpgradeType upgradeType)
     {
         if (text != null && JobManager.Instance != null)
-            text.text = JobManager.Instance.GetSiteUpgradeText(resource, isResourceText);
+        {
+            if (isQuantityText)
+                text.text = DeityManager.Instance.GetQuantityUpgradeText(resource);
+            else
+                text.text = DeityManager.Instance.GetFrequencyUpgradeText(resource);
+        }
     }
 }

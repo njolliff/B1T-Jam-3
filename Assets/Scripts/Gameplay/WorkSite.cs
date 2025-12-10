@@ -51,9 +51,9 @@ public class WorkSite
             maxResourcesPerWorker++;
             _numResourceUpgrades++;
 
-            // Calculate cost of next upgrade up to 999
+            // Calculate cost of next upgrade up to 999 and call upgrade purchased event
             resourceUpgradeCost = Mathf.Min(999,(int)(baseResourceUpgradeCost * Mathf.Pow(2, _numResourceUpgrades)));
-            EventManager.OnUpgradePurchased();
+            EventManager.OnUpgradePurchased(UpgradeType.Gold);
         }
     }
     public void UpgradeMoneyGeneration()
@@ -70,7 +70,7 @@ public class WorkSite
 
             // Calculate cost of next upgrade up to 999 and call upgrade purchased event
             moneyUpgradeCost = Mathf.Min(999, (int)(baseMoneyUpgradeCost * Mathf.Pow(2, _numMoneyUpgrades)));
-            EventManager.OnUpgradePurchased();
+            EventManager.OnUpgradePurchased(UpgradeType.Gold);
         }
     }
     #endregion

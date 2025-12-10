@@ -12,20 +12,25 @@ public class Deity
     public int demandInterval;
     public int daysSinceLastDemand = 0;
     public float demandScaleFactor;
-    public float demandUpgradeFactor;
+    public float demandUpgradeFactor = 1f;
     private Slider _offerringSlider;
 
     [Header("Happiness")]
-    public float happiness;
+    public float happiness = 50f;
     public float happinessGain, happinessLoss;
     private Slider _happinessSlider;
+
+    [Header("Upgrades")]
+    public int baseQuantityUpgradeCost, baseFrequencyUpgradeCost;
+    public int quantityUpgradeCost, frequencyUpgradeCost;
+    public int numQuantityUpgrades = 1, numFrequencyUpgrades = 1;
 
     // Non-Serialized
     private int _numDemandsMade = 0;
     #endregion
 
     #region Constructor
-    public Deity(ResourceType resource, int baseResourcesDemanded, int baseDemandInterval, float demandScaleFactor, float happinessGain, float happinessLoss, Slider offerringSlider, Slider happinessSlider)
+    public Deity(ResourceType resource, int baseResourcesDemanded, int baseDemandInterval, float demandScaleFactor, float happinessGain, float happinessLoss, int baseQuantityUpgradeCost, int baseFrequencyUpgradeCost, Slider offerringSlider, Slider happinessSlider)
     {
         // Set resource type
         resourceType = resource;
@@ -39,6 +44,12 @@ public class Deity
         this.happinessGain = happinessGain;
         this.happinessLoss = happinessLoss;
 
+        // Set upgrade costs
+        this.baseQuantityUpgradeCost = baseQuantityUpgradeCost;
+        quantityUpgradeCost = baseQuantityUpgradeCost;
+        this.baseFrequencyUpgradeCost = baseFrequencyUpgradeCost;
+        frequencyUpgradeCost = baseFrequencyUpgradeCost;
+
         // Set slider references
         _offerringSlider = offerringSlider;
         _happinessSlider = happinessSlider;
@@ -46,13 +57,10 @@ public class Deity
         // Set offering slider max value to demand interval
         if (_offerringSlider != null)
             _offerringSlider.maxValue = demandInterval;
-
-        // Set default upgrade factor and happiness
-        demandUpgradeFactor = 1;
-        happiness = 50;
     }
     #endregion
 
+    #region Day Passed + Demand Offering
     public void DayPassed()
     {
         // Increment days since last demand
@@ -69,7 +77,6 @@ public class Deity
             daysSinceLastDemand = 0;
         }
     }
-
     private void DemandOffering()
     {
         // Calculate offering amount and make demand of up to 999 resources
@@ -90,6 +97,48 @@ public class Deity
                 LoseHappiness();
         }
     }
+    #endregion
+
+    #region Upgrades
+    public void UpgradeQuantity()
+    {
+        if (ResourceManager.Instance != null && ResourceManager.Instance.unassignedWorkers >= quantityUpgradeCost)
+        {
+            // Lose unassigned workers + population equal to upgrade cost
+            ResourceManager.Instance.unassignedWorkers -= quantityUpgradeCost;
+            ResourceManager.Instance.DecreaseResource(ResourceType.Population, quantityUpgradeCost);
+
+            // Decrement upgrade factor and increment number of upgrades purchased
+            demandUpgradeFactor -= 0.05f;
+            numQuantityUpgrades++;
+
+            // Calculate cost of next upgrade up to 999 and call upgrade purchased event
+            quantityUpgradeCost = Mathf.Min(999, (int)(baseQuantityUpgradeCost * Mathf.Pow(2, numQuantityUpgrades)));
+            EventManager.OnUpgradePurchased(UpgradeType.Person);
+        }
+    }
+    public void UpgradeFrequency()
+    {
+        if (ResourceManager.Instance != null && ResourceManager.Instance.unassignedWorkers >= frequencyUpgradeCost)
+        {
+            // Lose unassigned workers + population equal to upgrade cost
+            ResourceManager.Instance.unassignedWorkers -= quantityUpgradeCost;
+            ResourceManager.Instance.DecreaseResource(ResourceType.Population, frequencyUpgradeCost);
+
+            // Increment demand intervalt and update demand slider max value
+            demandInterval++;
+            if (_offerringSlider != null)
+                _offerringSlider.maxValue = demandInterval;
+
+            // Increment number of upgrades
+            numQuantityUpgrades++;
+
+            // Calculate cost of next upgrade up to 999 and call upgrade purchased event
+            frequencyUpgradeCost = Mathf.Min(999, (int)(baseQuantityUpgradeCost * Mathf.Pow(2, numQuantityUpgrades)));
+            EventManager.OnUpgradePurchased(UpgradeType.Person);
+        }
+    }
+    #endregion
 
     #region Gain/Lose Happiness
     private void GainHappiness()
@@ -114,5 +163,12 @@ public class Deity
         if (happiness == 0 && GameManager.Instance != null)
             GameManager.Instance.GameOver();
     }
+    #endregion
+
+    #region Accessors
+    public bool CanAffordQuantityUpgrade() => ResourceManager.Instance.unassignedWorkers >= quantityUpgradeCost;
+    public bool CanAffordFrequencyUpgrade() => ResourceManager.Instance.unassignedWorkers >= frequencyUpgradeCost;
+    public string GetQuantityUpgradeText() => $"{demandUpgradeFactor * 100}%\n↓\n{(demandUpgradeFactor - 0.05f) * 100}%";
+    public string GetFrequencyUpgradeText() => $"{demandInterval} Days\n↓\n{demandInterval + 1} Days";
     #endregion
 }

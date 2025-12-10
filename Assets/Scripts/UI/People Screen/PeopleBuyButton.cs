@@ -1,11 +1,11 @@
-using TMPro;
-using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine;
+using TMPro;
 
-public class GoldBuyButton : MonoBehaviour
+public class PeopleBuyButton : MonoBehaviour
 {
     public ResourceType resource;
-    public bool isResourceButton;
+    public bool isQuantityButton;
     public Image sprite;
     public Button button;
     public TextMeshProUGUI text;
@@ -32,15 +32,15 @@ public class GoldBuyButton : MonoBehaviour
     #region Purchase
     public void PurchaseUpgrade()
     {
-        if (JobManager.Instance != null)
+        if (DeityManager.Instance != null)
         {
-            if (isResourceButton)
-                JobManager.Instance.UpgradeResourceGeneration(resource);
+            if (isQuantityButton)
+                DeityManager.Instance.UpgradeQuantity(resource);
             else
-                JobManager.Instance.UpgradeMoneyGeneration(resource);
+                DeityManager.Instance.UpgradeFrequency(resource);
         }
         else
-            Debug.Log("Job Manager is null.");
+            throw new System.NotImplementedException("Deity Manager is null.");
     }
     #endregion
 
@@ -48,11 +48,14 @@ public class GoldBuyButton : MonoBehaviour
     // Overload for onResourceNumberChanged event
     private void CheckIfPurchasable(ResourceType resourceType)
     {
-        if (JobManager.Instance != null && resourceType == ResourceType.Money)
+        if (DeityManager.Instance == null)
+            throw new System.NotImplementedException("Deity Manager is null.");
+
+        if (resourceType == ResourceType.Population)
         {
-            if (isResourceButton && JobManager.Instance.CanAffordResourceUpgrade(resource))
+            if (isQuantityButton && DeityManager.Instance.CanAffordQuantityUpgrade(resource))
                 ShowButton();
-            else if (!isResourceButton && JobManager.Instance.CanAffordMoneyUpgrade(resource))
+            else if (!isQuantityButton && DeityManager.Instance.CanAffordFrequencyUpgrade(resource))
                 ShowButton();
             else
                 HideButton();
@@ -61,15 +64,17 @@ public class GoldBuyButton : MonoBehaviour
     // Overload for onUpgradePurchased event
     private void CheckIfPurchasable(UpgradeType upgradeType)
     {
-        if (JobManager.Instance != null)
+        if (DeityManager.Instance != null)
         {
-            if (isResourceButton && JobManager.Instance.CanAffordResourceUpgrade(resource))
+            if (isQuantityButton && DeityManager.Instance.CanAffordQuantityUpgrade(resource))
                 ShowButton();
-            else if (!isResourceButton && JobManager.Instance.CanAffordMoneyUpgrade(resource))
+            else if (!isQuantityButton && DeityManager.Instance.CanAffordFrequencyUpgrade(resource))
                 ShowButton();
             else
                 HideButton();
         }
+        else
+            throw new System.NotImplementedException("Deity Manager is null.");
     }
     #endregion
 

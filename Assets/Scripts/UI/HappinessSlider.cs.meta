@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: f9569f2129332bd48b6450fef62af240
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - slider: {instanceID: 0}
+  - sliderHandleSprite: {instanceID: 0}
+  - unhappySprite: {fileID: 21300000, guid: fc633d564fe95ed499027894bce6fba5, type: 3}
+  - neutralSprite: {fileID: 21300000, guid: 06b8f9c91adcc474781f87e5266815d6, type: 3}
+  - happySprite: {fileID: 21300000, guid: 183318f012d36b64cae02b2d97eafced, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

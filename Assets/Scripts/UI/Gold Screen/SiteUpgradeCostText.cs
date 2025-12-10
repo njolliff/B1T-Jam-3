@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class UpgradeCostText : MonoBehaviour
+public class SiteUpgradeCostText : MonoBehaviour
 {
     public ResourceType resource;
     public bool isResourceCost;
@@ -10,15 +10,20 @@ public class UpgradeCostText : MonoBehaviour
     #region Event Subscription
     void OnEnable()
     {
+        // Subscribe to events
         EventManager.onUpgradePurchased += UpdateText;
+
+        // Update text
+        UpdateText(UpgradeType.Gold);
     }
     void OnDisable()
     {
+        // Unsubscribe from events
         EventManager.onUpgradePurchased -= UpdateText;
     }
     #endregion
 
-    private void UpdateText()
+    private void UpdateText(UpgradeType upgradeType)
     {
         if (text != null && JobManager.Instance != null)
         {
