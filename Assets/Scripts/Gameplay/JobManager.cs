@@ -43,12 +43,12 @@ public class JobManager : MonoBehaviour
     #endregion
 
     #region Assignment / Unassignment
-    public void AssignWorker(ResourceType resourceType)
+    public void AssignWorker(ResourceType resource)
     {
         if (ResourceManager.Instance.unassignedWorkers > 0)
         {
             // Assign worker to appropriate work site
-            switch (resourceType)
+            switch (resource)
             {
                 case ResourceType.Food:
                     foodWorkSite.workersAssigned++;
@@ -69,11 +69,11 @@ public class JobManager : MonoBehaviour
             EventManager.OnWorkerNumberChanged();
         }
     }
-    public void UnassignWorker(ResourceType resourceType)
+    public void UnassignWorker(ResourceType resource)
     {
         // If site has a worker to be removed,
         // Remove worker from appropriate work site, increment unassigned worker, and call worker number changed event
-        switch (resourceType)
+        switch (resource)
         {
             case ResourceType.Food:
                 if (foodWorkSite.workersAssigned > 0)
@@ -111,33 +111,145 @@ public class JobManager : MonoBehaviour
     }
     #endregion
 
+    #region Upgrading
+    public void UpgradeResourceGeneration(ResourceType resource)
+    {
+        if (resource == ResourceType.Food)
+            foodWorkSite.UpgradeResourceGeneration();
+        else if (resource == ResourceType.Water)
+            waterWorkSite.UpgradeResourceGeneration();
+        else if (resource == ResourceType.Wood)
+            woodWorkSite.UpgradeResourceGeneration();
+        else if (resource == ResourceType.Ore)
+            oreWorkSite.UpgradeResourceGeneration();
+    }
+    public void UpgradeMoneyGeneration(ResourceType resource)
+    {
+        if (resource == ResourceType.Food)
+            foodWorkSite.UpgradeMoneyGeneration();
+        else if (resource == ResourceType.Water)
+            waterWorkSite.UpgradeMoneyGeneration();
+        else if (resource == ResourceType.Wood)
+            woodWorkSite.UpgradeMoneyGeneration();
+        else if (resource == ResourceType.Ore)
+            oreWorkSite.UpgradeMoneyGeneration();
+    }
+    public bool CanAffordResourceUpgrade(ResourceType resource)
+    {
+        if (ResourceManager.Instance != null)
+        {
+            if (resource == ResourceType.Food)
+                return foodWorkSite.CanAffordResourceUpgrade();
+            else if (resource == ResourceType.Water)
+                return waterWorkSite.CanAffordResourceUpgrade();
+            else if (resource == ResourceType.Wood)
+                return woodWorkSite.CanAffordResourceUpgrade();
+            else if (resource == ResourceType.Ore)
+                return oreWorkSite.CanAffordResourceUpgrade();
+            else
+                throw new System.NotImplementedException("Invalid resource type for CanAffordResourceUpgrade().");
+        }
+        else
+            throw new System.NotImplementedException("Resource Manager is null.");
+    }
+    public bool CanAffordMoneyUpgrade(ResourceType resource)
+    {
+        if (ResourceManager.Instance != null)
+        {
+            if (resource == ResourceType.Food)
+                return foodWorkSite.CanAffordMoneyUpgrade();
+            else if (resource == ResourceType.Water)
+                return waterWorkSite.CanAffordMoneyUpgrade();
+            else if (resource == ResourceType.Wood)
+                return woodWorkSite.CanAffordMoneyUpgrade();
+            else if (resource == ResourceType.Ore)
+                return oreWorkSite.CanAffordMoneyUpgrade();
+            else
+                throw new System.NotImplementedException("Invalid resource type for CanAffordMoneyUpgrade().");
+        }
+        else
+            throw new System.NotImplementedException("Resource Manager is null.");
+    }
+    #endregion
+
     #region Accessors
-    public int GetNumWorkers(ResourceType resourceType) => resourceType switch
+    public int GetNumWorkers(ResourceType resource) => resource switch
     {
         ResourceType.Food => foodWorkSite.workersAssigned,
         ResourceType.Water => waterWorkSite.workersAssigned,
         ResourceType.Wood => woodWorkSite.workersAssigned,
         ResourceType.Ore => oreWorkSite.workersAssigned,
         
-        _ => throw new System.NotImplementedException()
+        _ => throw new System.NotImplementedException("Invalid resource type for GetNumWorkers().")
     };
-    public string GetResourceGenerationRange(ResourceType resourceType) => resourceType switch
+    public string GetResourceGenerationRange(ResourceType resource) => resource switch
     {
-        ResourceType.Food => $"{foodWorkSite.minResourcesPerWorker * foodWorkSite.workersAssigned}-{foodWorkSite.maxResourcesPerWorker * foodWorkSite.workersAssigned}",
-        ResourceType.Water => $"{waterWorkSite.minResourcesPerWorker * waterWorkSite.workersAssigned}-{waterWorkSite.maxResourcesPerWorker * waterWorkSite.workersAssigned}",
-        ResourceType.Wood => $"{woodWorkSite.minResourcesPerWorker * woodWorkSite.workersAssigned}-{woodWorkSite.maxResourcesPerWorker * woodWorkSite.workersAssigned}",
-        ResourceType.Ore => $"{oreWorkSite.minResourcesPerWorker * oreWorkSite.workersAssigned}-{oreWorkSite.maxResourcesPerWorker * oreWorkSite.workersAssigned}",
+        ResourceType.Food => foodWorkSite.GetResourceGenerationRange(),
+        ResourceType.Water => waterWorkSite.GetResourceGenerationRange(),
+        ResourceType.Wood => woodWorkSite.GetResourceGenerationRange(),
+        ResourceType.Ore => oreWorkSite.GetResourceGenerationRange(),
 
-        _ => throw new System.NotImplementedException()
+        _ => throw new System.NotImplementedException("Invalid resource type for GetResourceGenerationRange().")
     };
-    public string GetMoneyGenerationRange(ResourceType resourceType) => resourceType switch
+    public string GetMoneyGenerationRange(ResourceType resource) => resource switch
     {
-        ResourceType.Food => $"{foodWorkSite.minMoneyPerWorker * foodWorkSite.workersAssigned}-{foodWorkSite.maxMoneyPerWorker * foodWorkSite.workersAssigned}",
-        ResourceType.Water => $"{waterWorkSite.minMoneyPerWorker * waterWorkSite.workersAssigned}-{waterWorkSite.maxMoneyPerWorker * waterWorkSite.workersAssigned}",
-        ResourceType.Wood => $"{woodWorkSite.minMoneyPerWorker * woodWorkSite.workersAssigned}-{woodWorkSite.maxMoneyPerWorker * woodWorkSite.workersAssigned}",
-        ResourceType.Ore => $"{oreWorkSite.minMoneyPerWorker * oreWorkSite.workersAssigned}-{oreWorkSite.maxMoneyPerWorker * oreWorkSite.workersAssigned}",
+        ResourceType.Food => foodWorkSite.GetMoneyGenerationRange(),
+        ResourceType.Water => waterWorkSite.GetMoneyGenerationRange(),
+        ResourceType.Wood => woodWorkSite.GetMoneyGenerationRange(),
+        ResourceType.Ore => oreWorkSite.GetMoneyGenerationRange(),
 
-        _ => throw new System.NotImplementedException()
+        _ => throw new System.NotImplementedException("Invalid resource type for GetMoneyGenerationRange().")
+    };
+    public string GetSiteUpgradeText(ResourceType resource, bool getResource)
+    {
+        if (resource == ResourceType.Food)
+        {
+            if (getResource)
+                return foodWorkSite.GetResourceUpgradeText();
+            else
+                return foodWorkSite.GetMoneyUpgradeText();
+        }
+        else if (resource == ResourceType.Water)
+        {
+            if (getResource)
+                return waterWorkSite.GetResourceUpgradeText();
+            else
+                return waterWorkSite.GetMoneyUpgradeText();
+        }
+        else if (resource == ResourceType.Wood)
+        {
+            if (getResource)
+                return woodWorkSite.GetResourceUpgradeText();
+            else
+                return woodWorkSite.GetMoneyUpgradeText();
+        }
+        else if (resource == ResourceType.Ore)
+        {
+            if (getResource)
+                return oreWorkSite.GetResourceUpgradeText();
+            else
+                return oreWorkSite.GetMoneyUpgradeText();
+        }
+
+        throw new System.NotImplementedException("Invalid resource type for GetSiteUpgradeText().");
+    }
+    public int GetSiteResourceUpgradeCost(ResourceType resource) => resource switch
+    {
+        ResourceType.Food => foodWorkSite.resourceUpgradeCost,
+        ResourceType.Water => waterWorkSite.resourceUpgradeCost,
+        ResourceType.Wood => woodWorkSite.resourceUpgradeCost,
+        ResourceType.Ore => oreWorkSite.resourceUpgradeCost,
+
+        _ => throw new System.NotImplementedException("Invalid resource type for GetSiteResourceUpgradeCost().")
+    };
+    public int GetSiteMoneyUpgradeCost(ResourceType resource) => resource switch
+    {
+        ResourceType.Food => foodWorkSite.moneyUpgradeCost,
+        ResourceType.Water => waterWorkSite.moneyUpgradeCost,
+        ResourceType.Wood => woodWorkSite.moneyUpgradeCost,
+        ResourceType.Ore => oreWorkSite.moneyUpgradeCost,
+
+        _ => throw new System.NotImplementedException("Invalid resource type for GetSiteMoneyUpgradeCost().")
     };
     #endregion
 }

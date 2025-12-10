@@ -51,18 +51,18 @@ public class DeityManager : MonoBehaviour
     }
     #endregion
 
-    // Notify dieties of day passing
     public void DayPassed()
     {
-        foodDeity.CheckOfferingDay();
-        waterDeity.CheckOfferingDay();
-        woodDeity.CheckOfferingDay();
-        oreDeity.CheckOfferingDay();
+        // Notify dieties of day passing
+        foodDeity.DayPassed();
+        waterDeity.DayPassed();
+        woodDeity.DayPassed();
+        oreDeity.DayPassed();
     }
 
-    // Set deity settings
     private void InitializeDeities()
     {
+        // Initialize deity values
         foodDeity = new(ResourceType.Food, baseResourcesDemanded, baseDemandInterval, demandScaleFactor, happinessGain, happinessLoss, foodOfferingSlider, foodHappinessSlider);
         waterDeity = new(ResourceType.Water, baseResourcesDemanded, baseDemandInterval, demandScaleFactor, happinessGain, happinessLoss, waterOfferingSlider, waterHappinessSlider);
         woodDeity = new(ResourceType.Wood, baseResourcesDemanded, baseDemandInterval, demandScaleFactor, happinessGain, happinessLoss, woodOfferingSlider, woodHappinessSlider);

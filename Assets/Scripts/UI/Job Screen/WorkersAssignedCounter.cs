@@ -1,14 +1,17 @@
 using TMPro;
 using UnityEngine;
 
-public class UnassignedCounter : MonoBehaviour
+public class WorkersAssignedCounter : MonoBehaviour
 {
+    public ResourceType resourceType;
     public TextMeshProUGUI text;
 
     #region Event Subscription
     void OnEnable()
     {
         EventManager.onWorkerNumberChanged += UpdateText;
+
+        UpdateText();
     }
     void OnDisable()
     {
@@ -16,18 +19,11 @@ public class UnassignedCounter : MonoBehaviour
     }
     #endregion
 
-    void Start()
-    {
-        // Initialize text
-        UpdateText();
-    }
-
     private void UpdateText()
     {
-        // Update counter
-        if (ResourceManager.Instance != null && text != null)
+        if (JobManager.Instance != null && text != null)
         {
-            text.text = ResourceManager.Instance.unassignedWorkers.ToString();
+            text.text = JobManager.Instance.GetNumWorkers(resourceType).ToString();
         }
     }
 }

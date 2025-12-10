@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
+    [ContextMenu("Game Over")]
     public void GameOver()
     {
         // Stop gameplay by setting game speed slider to 0 and making it uninteractable

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 9dcce2c21ba92b347b48f31ac7efa424
+guid: d906ae087cfe1524e95c2aa4bf41252d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7943054369084227169
-    second: wood_icon3_0
+      213: -4697567697819428825
+    second: screen_Gold_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -48,7 +48,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 16
@@ -152,13 +152,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: wood_icon3_0
+      name: screen_Gold_0
       rect:
         serializedVersion: 2
-        x: 1
-        y: 1
-        width: 14
-        height: 14
+        x: 0
+        y: 0
+        width: 284
+        height: 160
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -167,8 +167,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 16e31e45dd56b3e60800000000000000
-      internalID: 7943054369084227169
+      spriteID: 7289f1f4113eeceb0800000000000000
+      internalID: -4697567697819428825
       vertices: []
       indices: 
       edges: []
@@ -187,7 +187,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      wood_icon3_0: 7943054369084227169
+      screen_Gold_0: -4697567697819428825
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -17,6 +17,8 @@ public class JobButton : MonoBehaviour, IPointerClickHandler
     void OnEnable()
     {
         EventManager.onWorkerNumberChanged += WorkerNumberChanged;
+
+        WorkerNumberChanged();
     }
     void OnDisable()
     {

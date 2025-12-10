@@ -1,16 +1,21 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class ScaleOnMouseOver : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    public Selectable selectableComponent;
     public float selectedScale;
     public float scaleTime;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        StopAllCoroutines();
-        StartCoroutine(ScaleButton(new Vector3(selectedScale, selectedScale, 1)));
+        if (selectableComponent.interactable)
+        {
+            StopAllCoroutines();
+            StartCoroutine(ScaleButton(new Vector3(selectedScale, selectedScale, 1)));
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)

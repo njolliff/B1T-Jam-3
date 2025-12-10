@@ -10,13 +10,13 @@ public class Deity
     public ResourceType resourceType;
     public int baseResourcesDemanded;
     public int demandInterval;
-    public int daysUntilOffering;
+    public int daysSinceLastDemand = 0;
     public float demandScaleFactor;
-    public float demandUpgradeFactor = 1;
+    public float demandUpgradeFactor;
     private Slider _offerringSlider;
 
     [Header("Happiness")]
-    public float happiness = 50;
+    public float happiness;
     public float happinessGain, happinessLoss;
     private Slider _happinessSlider;
 
@@ -33,7 +33,6 @@ public class Deity
         // Set initial offering values
         this.baseResourcesDemanded = baseResourcesDemanded;
         demandInterval = baseDemandInterval;
-        daysUntilOffering = demandInterval;
         this.demandScaleFactor = demandScaleFactor;
 
         // Set happiness gained/lost on offering made/missed
@@ -54,22 +53,21 @@ public class Deity
     }
     #endregion
 
-    public void CheckOfferingDay()
+    public void DayPassed()
     {
+        // Increment days since last demand
+        daysSinceLastDemand++;
+
         // Update offering progress bar
         if (_offerringSlider != null)
-            _offerringSlider.value = demandInterval - daysUntilOffering;
+            _offerringSlider.value = daysSinceLastDemand;
 
         // Make offering if it is offering day
-        if (daysUntilOffering == 0)
+        if (daysSinceLastDemand >= demandInterval)
         {
             DemandOffering();
-            daysUntilOffering = demandInterval;
+            daysSinceLastDemand = 0;
         }
-
-        // Otherwise, decrement days until offering
-        else
-            daysUntilOffering--;
     }
 
     private void DemandOffering()
@@ -97,7 +95,7 @@ public class Deity
     private void GainHappiness()
     {
         // Increase happiness up to 100
-        happiness = Mathf.Max(100, happiness + happinessGain);
+        happiness = Mathf.Min(100, happiness + happinessGain);
 
         // Update happiness slider
         if (_happinessSlider != null)

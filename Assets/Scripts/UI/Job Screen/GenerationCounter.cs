@@ -13,6 +13,8 @@ public class GenerationCounter : MonoBehaviour
     void OnEnable()
     {
         EventManager.onWorkerNumberChanged += UpdateText;
+
+        UpdateText();
     }
     void OnDisable()
     {

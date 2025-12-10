@@ -41,11 +41,17 @@ public class TimeManager : MonoBehaviour
 
     private void DayPassed()
     {
+        // Update birth / immigration cooldowns
+        if (PopulationManager.Instance != null)
+            PopulationManager.Instance.DayPassed();
+
         // Do daily work
-        JobManager.Instance.DayPassed();
+        if (JobManager.Instance != null)
+            JobManager.Instance.DayPassed();
 
         // Check for deity demands
-        DeityManager.Instance.DayPassed();
+        if (DeityManager.Instance != null)
+            DeityManager.Instance.DayPassed();
         
         // Update UI
         EventManager.OnDayPassed(day, month, year);
